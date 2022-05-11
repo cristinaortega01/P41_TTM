@@ -29,12 +29,13 @@ public class HelloApplication extends Application {
         hbox.setSpacing(10);
         hbox.setStyle("-fx-background-color: #336699;");
 
+        StackPane stack = new StackPane();
         Text title = new Text("Music Tune Education");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         title.setTextAlignment(TextAlignment.CENTER);
+        hbox.setMargin(title, new Insets(0, 0, 0, 350));
         hbox.getChildren().add(title);
 
-        StackPane stack = new StackPane();
         Rectangle helpIcon = new Rectangle(30.0, 25.0);
         helpIcon.setFill(new LinearGradient(0,0,0,1, true, CycleMethod.NO_CYCLE,
                 new Stop[]{
@@ -52,7 +53,7 @@ public class HelloApplication extends Application {
 
         stack.getChildren().addAll(helpIcon, helpText);
         stack.setAlignment(Pos.CENTER_RIGHT);     // Right-justify nodes in stack
-        StackPane.setMargin(helpText, new Insets(0, 10, 0, 0)); // Center "?"
+        StackPane.setMargin(helpText, new Insets(0, 10, 0, 0));
 
         hbox.getChildren().add(stack);            // Add to HBox from Example 1-2
         HBox.setHgrow(stack, Priority.ALWAYS);    // Give stack any extra space
@@ -66,21 +67,42 @@ public class HelloApplication extends Application {
         HBox hbox = addHBox();
         border.setTop(hbox);
 
+        BorderPane gridborder = new BorderPane();
+        border.setCenter(gridborder);
+        GridPane gridPane = new GridPane();
+        HBox hboxdesc = new HBox();
+        StackPane stack = new StackPane();
+        Text description = new Text("Description");
+        description.setTextAlignment(TextAlignment.CENTER);
+        hboxdesc.setMargin(description, new Insets(20, 0, 0, 200));
+        hboxdesc.getChildren().add(description);
+        gridborder.setTop(hboxdesc);
 
-        /*GridPane gridPane = new GridPane();
         ChoiceBox levelselect = new ChoiceBox();
+        levelselect.setPrefSize(200, 40);
         levelselect.getItems().addAll("Level 1", "Level 2", "Level 3");
+        levelselect.setValue("Level 1");
         ChoiceBox rangeselect = new ChoiceBox();
+        rangeselect.setPrefSize(200, 40);
         rangeselect.getItems().addAll("Bajo", "Contralto", "Tenor", "Bajo");
-        ToggleButton Select = new ToggleButton();
+        rangeselect.setValue("Bajo");
+        Button buttonstart = new Button("START");
+        buttonstart.setPrefSize(200, 40);
+
+        GridPane.setMargin(levelselect, new Insets(180, 0, 0, 80));
+        GridPane.setMargin(rangeselect, new Insets(180, 0, 0, 40));
+        GridPane.setMargin(buttonstart, new Insets(180, 0, 0, 150));
 
         gridPane.add(levelselect, 1, 1);
         gridPane.add(rangeselect, 2,1);
+        gridPane.add(buttonstart, 3, 1);
 
-         */
+        gridborder.setCenter(gridPane);
+
         Scene scene = new Scene(border, 960, 540);
         stage.setTitle("Music Tune education!");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
