@@ -1,6 +1,8 @@
 package com.example.front;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,6 +25,36 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
+    private Scene thirdscene(Stage stage){
+        //Crear aqui segunda escena
+        BorderPane border = new BorderPane();
+        Scene scene = new Scene(border, 960, 540);
+        return scene;
+    }
+
+    private Scene secondscene(Stage stage){
+        //Crear aqui segunda escena
+        BorderPane border = new BorderPane();
+        Button buttonchange = new Button("Cambiar escena");
+
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                Scene scene = thirdscene(stage);
+                stage.setTitle("Tutorial JavaFX");
+                stage.setScene(scene);
+                stage.show();
+            }
+        };
+
+        buttonchange.setOnAction(event);
+        buttonchange.setPrefSize(200, 40);
+        border.setTop(buttonchange);
+        Scene scene = new Scene(border, 960, 540);
+        return scene;
+    }
+
+
     private  HBox addHBox() {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
@@ -87,6 +119,18 @@ public class HelloApplication extends Application {
         rangeselect.getItems().addAll("Bajo", "Contralto", "Tenor", "Bajo");
         rangeselect.setValue("Bajo");
         Button buttonstart = new Button("START");
+
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                Scene scene = secondscene(stage);
+                stage.setTitle("Tutorial JavaFX");
+                stage.setScene(scene);
+                stage.show();
+            }
+        };
+
+        buttonstart.setOnAction(event);
         buttonstart.setPrefSize(200, 40);
 
         GridPane.setMargin(levelselect, new Insets(180, 0, 0, 80));
