@@ -27,6 +27,12 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     private Scene thirdscene(Stage stage){
         //Crear aqui segunda escena
+        StackPane stack = new StackPane();
+        Text title = new Text("Music Tune Education");
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        title.setTextAlignment(TextAlignment.CENTER);
+        hbox.setMargin(title, new Insets(0, 0, 0, 350));
+        hbox.getChildren().add(title);
         BorderPane border = new BorderPane();
         Scene scene = new Scene(border, 960, 540);
         return scene;
