@@ -27,6 +27,26 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     private Scene thirdscene(Stage stage){
         //Crear aqui segunda escena
+        StackPane stack = new StackPane();
+        Text title = new Text("Music Tune Education");
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        title.setTextAlignment(TextAlignment.CENTER);
+        hbox.setMargin(title, new Insets(0, 0, 0, 350));
+        hbox.getChildren().add(title);
+
+
+        Button buttonsing = new Button("SING");
+        buttonsing.setOnAction(event);
+        buttonsing.setPrefSize(200, 40);
+        GridPane.setMargin(buttonsing, new Insets(180, 0, 0, 150));
+        gridPane.add(buttonsing, 3, 1);
+
+        AudioClip buzzer = new AudioClip (getClass().getResource("/descargas/LAsound.mp3").toExternalForm());
+        buttonsing.setOnAction(event ->{
+            buzzer.play();
+        })
+
+
         BorderPane border = new BorderPane();
         Scene scene = new Scene(border, 960, 540);
         return scene;
