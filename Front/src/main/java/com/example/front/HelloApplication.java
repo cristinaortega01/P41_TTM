@@ -28,7 +28,80 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 public class HelloApplication extends Application {
-    private Scene thirdscene(Stage stage){
+    private void lastscene(Stage stage){
+        BorderPane gridborder = new BorderPane();
+        GridPane gridPane = new GridPane();
+        HBox hboxdesc = new HBox();
+        StackPane stack = new StackPane();
+        Text description = new Text("CONGRATULATIONS");
+        description.setFont(Font.font("Arial", FontWeight.BOLD, 48));
+        description.setTextAlignment(TextAlignment.CENTER);
+        hboxdesc.setMargin(description, new Insets(50, 0, 0, 230));
+        hboxdesc.getChildren().add(description);
+        gridborder.setTop(hboxdesc);
+
+        Label notalbl = new Label("X / 10");
+        notalbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        Label namelbl = new Label("Name: ");
+        TextField nametxt = new TextField();
+        nametxt.setPrefSize(400, 40);
+        Button buttonsave = new Button("SAVE");
+        buttonsave.setPrefSize(200, 40);
+
+        Button buttonhome = new Button("HOME");
+        buttonhome.setPrefSize(200, 40);
+        EventHandler<ActionEvent> homeevent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                firstScene(stage);
+            }
+        };
+        buttonhome.setOnAction(homeevent);
+
+        Button buttonretry = new Button("RETRY");
+        buttonretry.setPrefSize(200, 40);
+        EventHandler<ActionEvent> retryevent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                thirdscene(stage);
+            }
+        };
+        buttonretry.setOnAction(retryevent);
+
+        Button buttonexit = new Button("EXIT");
+        buttonexit.setPrefSize(200, 40);
+        EventHandler<ActionEvent> exitevent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                stage.close();
+            }
+        };
+        buttonexit.setOnAction(exitevent);
+
+        GridPane.setMargin(notalbl, new Insets(20, 0, 0, 150));
+        GridPane.setMargin(namelbl, new Insets(150, 0, 0, 80));
+        GridPane.setMargin(nametxt, new Insets(150, 0, 0, -100));
+        GridPane.setMargin(buttonsave, new Insets(150, 0, 0, 80));
+        GridPane.setMargin(buttonhome, new Insets(70, 0, 0, 110));
+        GridPane.setMargin(buttonretry, new Insets(70, 0, 0, 80));
+        GridPane.setMargin(buttonexit, new Insets(70, 0, 0, 60));
+
+        gridPane.add(notalbl, 2, 1);
+        gridPane.add(namelbl, 1, 2);
+        gridPane.add(nametxt, 2, 2);
+        gridPane.add(buttonsave, 3, 2);
+        gridPane.add(buttonhome, 1, 3);
+        gridPane.add(buttonretry, 2,3);
+        gridPane.add(buttonexit, 3, 3);
+
+        gridborder.setCenter(gridPane);
+        Scene scene = new Scene(gridborder, 960, 540);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
+    private void thirdscene(Stage stage){
         //Crear aqui segunda escena
         StackPane stack = new StackPane();
         Text title = new Text("Music Tune Education");
@@ -46,10 +119,22 @@ public class HelloApplication extends Application {
         */
 
         Button buttonsing = new Button("SING");
-        buttonsing.setOnAction(event);
-        buttonsing.setPrefSize(200, 40);
-        GridPane.setMargin(buttonsing, new Insets(180, 0, 0, 150));
-        gridPane.add(buttonsing, 3, 1);
+        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                //try {
+                    //File sound = new File("C:\\Users\\crist\\Downloads\\LAsound.wav");
+                    //Clip c = AudioSystem.getClip();
+                    //c.open(AudioSystem.getAudioInputsStream(sound));
+                    //c.start();
+                //*}catch(Exception e){
+
+                }
+                final java.net.URL resource = getClass().getResource("LAsound.wav");
+                Media.add
+                final Media media = new Media(resource.toString());
+                final MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.play();
 
                 lastscene(stage);
             }
