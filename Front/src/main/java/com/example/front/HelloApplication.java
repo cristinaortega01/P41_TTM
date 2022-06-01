@@ -1,5 +1,7 @@
 package com.example.front;
 
+package com.example.front;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -7,9 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -22,7 +22,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.*;
+import java.applet.AudioClip;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class HelloApplication extends Application {
     private Scene thirdscene(Stage stage){
@@ -31,9 +34,16 @@ public class HelloApplication extends Application {
         Text title = new Text("Music Tune Education");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         title.setTextAlignment(TextAlignment.CENTER);
+        HBox hbox = new HBox();
         hbox.setMargin(title, new Insets(0, 0, 0, 350));
         hbox.getChildren().add(title);
 
+        //Imagen
+        /* private Image img = new Image("C:\\Users\\leon\\Pictures\\lobo.jpg", false);
+        etiquetaImagen = new Label();
+        etiquetaImagen.setGraphic(new ImageView(img));
+        etiquetaImagen.setTooltip(new Tooltip("Una etiqueta con una imagen..."));
+        */
 
         Button buttonsing = new Button("SING");
         buttonsing.setOnAction(event);
@@ -41,29 +51,79 @@ public class HelloApplication extends Application {
         GridPane.setMargin(buttonsing, new Insets(180, 0, 0, 150));
         gridPane.add(buttonsing, 3, 1);
 
-        AudioClip buzzer = new AudioClip (getClass().getResource("/descargas/LAsound.mp3").toExternalForm());
+                lastscene(stage);
+            }
+        };
+        buttonsing.setOnAction(event1);
+
+        /*AudioClip buzzer = new AudioClip(getClass().getResource("/descargas/LAsound.mp3").toExternalForm()) {
+            @Override
+            public void play() {
+            }
+            @Override
+            public void loop() {
+            }
+            @Override
+            public void stop() {
+            }
+        };
         buttonsing.setOnAction(event ->{
             buzzer.play();
-        })
+        });*/
+
+        buttonsing.setPrefSize(200, 40);
+        GridPane gridPane = new GridPane();
+        gridPane.setMargin(buttonsing, new Insets(180, 0, 0, 150));
+        gridPane.add(buttonsing, 3, 1);
 
 
         BorderPane border = new BorderPane();
+        border.setCenter(gridPane);
         Scene scene = new Scene(border, 960, 540);
-        return scene;
+        stage.setScene(scene);
+        stage.show();
     }
 
-    private Scene secondscene(Stage stage){
+    private void secondscene(Stage stage){
         //Crear aqui segunda escena
         BorderPane border = new BorderPane();
-        Button buttonchange = new Button("Cambiar escena");
+        Button buttonchange = new Button("TEST");
+        Mixer.Info[] infos = AudioSystem.getMixerInfo(); //tenemos instancias de los dispositivos de audio instalados en el pc.
+        LinkedList<Mixer.Info> infos_2 = new LinkedList<>();
+        for(Mixer.Info info: infos) {
+            if (info.getName().startsWith("Port") == false){
+                infos_2.add(info);
+            }
+        }
+
+        ChoiceBox deviceSelection = new ChoiceBox();
+        deviceSelection.setPrefSize(200, 40);
+        deviceSelection.getItems().addAll(infos_2);
+        deviceSelection.setValue(infos_2.getFirst()); //by default the first MIDI device.
+        border.setCenter(deviceSelection);
+
+        deviceSelection.setOnAction((event) -> {
+            int selectedIndex = deviceSelection.getSelectionModel().getSelectedIndex();
+            Object selectedItem = deviceSelection.getSelectionModel().getSelectedItem();
+
+            System.out.println("Selection made: [" + selectedIndex + "] " + selectedItem);
+            System.out.println("   ChoiceBox.getValue(): " + deviceSelection.getValue());
+
+            try {
+                TargetDataLine mic = AudioSystem.getTargetDataLine(new
+                        AudioFormat(44100, 16, 1, true, true), infos_2.get(selectedIndex));
+                System.out.println("Device works correctly!!!!");
+            }catch(Exception e){
+                System.out.println(e);
+            }
+        });
+
+
 
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e)
             {
-                Scene scene = thirdscene(stage);
-                stage.setTitle("Tutorial JavaFX");
-                stage.setScene(scene);
-                stage.show();
+                thirdscene(stage);
             }
         };
 
@@ -71,7 +131,8 @@ public class HelloApplication extends Application {
         buttonchange.setPrefSize(200, 40);
         border.setTop(buttonchange);
         Scene scene = new Scene(border, 960, 540);
-        return scene;
+        stage.setScene(scene);
+        stage.show();
     }
 
 
@@ -98,14 +159,23 @@ public class HelloApplication extends Application {
         helpIcon.setArcHeight(3.5);
         helpIcon.setArcWidth(3.5);
 
-        Text helpText = new Text("?");
-        helpText.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
-        helpText.setFill(Color.WHITE);
-        helpText.setStroke(Color.web("#7080A0"));
+        EventHandler<ActionEvent> helpevent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                Alert helpalert = new Alert(Alert.AlertType.INFORMATION);
+                helpalert.setTitle("INFORMATION");
+                helpalert.setHeaderText("\t\tSOFTWARE DOCUMENTATION");
+                helpalert.setContentText("1.First Steps");
+                helpalert.showAndWait();
+            }
+        };
+        Button helpButton = new Button("?");
+        helpButton.setPrefSize(29, 23);
+        helpButton.setOnAction(helpevent);
 
-        stack.getChildren().addAll(helpIcon, helpText);
+        stack.getChildren().addAll(helpIcon, helpButton);
         stack.setAlignment(Pos.CENTER_RIGHT);     // Right-justify nodes in stack
-        StackPane.setMargin(helpText, new Insets(0, 10, 0, 0));
+        StackPane.setMargin(helpButton, new Insets(1, 1, 0, 0));
 
         hbox.getChildren().add(stack);            // Add to HBox from Example 1-2
         HBox.setHgrow(stack, Priority.ALWAYS);    // Give stack any extra space
@@ -113,8 +183,7 @@ public class HelloApplication extends Application {
         return hbox;
     }
 
-    @Override
-    public void start(Stage stage) throws IOException {
+    private void firstScene(Stage stage){
         BorderPane border = new BorderPane();
         HBox hbox = addHBox();
         border.setTop(hbox);
@@ -143,10 +212,7 @@ public class HelloApplication extends Application {
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e)
             {
-                Scene scene = secondscene(stage);
-                stage.setTitle("Tutorial JavaFX");
-                stage.setScene(scene);
-                stage.show();
+                secondscene(stage);
             }
         };
 
@@ -168,6 +234,11 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+    }
+
+    @Override
+    public void start(Stage stage) throws IOException {
+        firstScene(stage);
     }
 
     public static void main(String[] args) {
